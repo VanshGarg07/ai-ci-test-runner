@@ -1,0 +1,27 @@
+{
+  "schema": 2,
+  "required_executas": [
+    {
+      "tool_id": "bundled:aici-engine",
+      "min_version": "1.0.3",
+      "version": "latest"
+    }
+  ],
+  "ui": {
+    "bundle": {
+      "format": "static-spa",
+      "entry": "index.html"
+    },
+    "views": [
+      {
+        "name": "main",
+        "title": "AI-CI Test Runner",
+        "default": true
+      }
+    ],
+    "host_api": {
+  "tools": ["required:bundled:aici-engine"],
+  "llm": ["complete"]
+}
+  }
+}

@@ -1,0 +1,73 @@
+name: Build aici-engine (linux-x86_64)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  linux:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: executas/aici-engine
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Read version from the tool manifest
+        id: v
+        run: echo "version=$(node -p "require('./manifest.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Install production dependencies
+        run: npm ci --omit=dev
+
+      - name: Assemble self-contained bundle (node + code + Chromium)
+        run: |
+          set -euo pipefail
+          B="$RUNNER_TEMP/bundle"
+          mkdir -p "$B/app" "$B/node/bin" "$B/browsers" "$GITHUB_WORKSPACE/dist"
+          cp index.js browser.js llm.js manifest.json package.json "$B/app/"
+          cp -r node_modules "$B/app/node_modules"
+          cp "$(command -v node)" "$B/node/bin/node"
+          PLAYWRIGHT_BROWSERS_PATH="$B/browsers" npx playwright install chromium
+          cp packaging/aici-engine.sh "$B/aici-engine"
+          chmod +x "$B/aici-engine" "$B/node/bin/node"
+          OUT="$GITHUB_WORKSPACE/dist/aici-engine-${{ steps.v.outputs.version }}-linux-x86_64.tar.gz"
+          tar -czf "$OUT" -C "$B" aici-engine node app browsers
+          ls -lh "$OUT"
+
+      - name: Smoke test the packaged build
+        run: |
+          set -eu
+          T="$RUNNER_TEMP/smoke"; mkdir -p "$T/site" "$T/x"
+          tar -xzf "$GITHUB_WORKSPACE/dist/aici-engine-${{ steps.v.outputs.version }}-linux-x86_64.tar.gz" -C "$T/x"
+          printf '%s' '<!DOCTYPE html><html><body><script>window.onload=function(){processSystemPayloadData();};</script></body></html>' > "$T/site/broken.html"
+          (cd "$T/site" && nohup python3 -m http.server 8080 --bind 127.0.0.1 >/dev/null 2>&1 &)
+          sleep 2
+          D=$(printf '%s\n' '{"jsonrpc":"2.0","id":1,"method":"describe"}' | timeout 20 "$T/x/aici-engine" | head -n1)
+          echo "describe: $D" | cut -c1-200
+          echo "$D" | grep -q '"run_audit"'
+          A=$( (printf '%s\n' '{"jsonrpc":"2.0","id":2,"method":"invoke","params":{"tool":"run_audit","arguments":{"targetUrl":"http://127.0.0.1:8080/broken.html"}}}'; sleep 30) | timeout 50 "$T/x/aici-engine" | head -n1 )
+          echo "audit: $A" | cut -c1-500
+          echo "$A" | grep -q '"crashCount":1'
+
+      - name: Keep the archive as a workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aici-engine-linux-x86_64
+          path: dist/*.tar.gz
+        working-directory: .
+
+      - name: Publish to a GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="executa-v${{ steps.v.outputs.version }}"
+          FILE="$GITHUB_WORKSPACE/dist/aici-engine-${{ steps.v.outputs.version }}-linux-x86_64.tar.gz"
+          gh release create "$TAG" "$FILE" --title "aici-engine ${{ steps.v.outputs.version }}" --notes "Linux x86_64 build of the AI-CI executa" \
+            || gh release upload "$TAG" "$FILE" --clobber

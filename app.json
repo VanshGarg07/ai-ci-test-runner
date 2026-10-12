@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anna.partners/anna-app-identity/v1",
+  "host": "https://anna.partners",
+  "app_id": 529,
+  "slug": "ai-ci-test-runner",
+  "handle": "vansh-garg",
+  "first_published_at": "2026-10-12T12:22:18.349Z",
+  "name": "AI-CI Automated Test Runner",
+  "version": "1.0.3",
+  "description": "Autonomous headless browser telemetry diagnostic engine catching console crashes.",
+  "category": "productivity",
+  "bundled_executas": {
+    "aici-engine": {
+      "path": "./executas/aici-engine"
+    }
+  }
+}

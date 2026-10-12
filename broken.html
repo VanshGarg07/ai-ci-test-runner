@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Faulty System Mock Target</title>
+</head>
+<body>
+    <h1>Operational Workspace</h1>
+    <button onclick="executeSecureAction()">Initiate Routine</button>
+
+    <script>
+        // Intentionally broken routine call: executeSecureAction is never defined
+        console.log("Mock workspace engine successfully initialized.");
+        
+        // This fires an automatic reference error when the page boots up
+        window.onload = function() {
+            processSystemPayloadData(); 
+        };
+    </script>
+</body>
+</html>

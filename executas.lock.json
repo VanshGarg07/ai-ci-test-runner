@@ -1,0 +1,11 @@
+{
+  "$schema": "anna-executas-lock/v1",
+  "host": "https://anna.partners",
+  "executas": {
+    "aici-engine": {
+      "tool_id": "tool-vansh-garg-aici-engine-htwt45jr",
+      "path": "./executas/aici-engine",
+      "source": "cut"
+    }
+  }
+}

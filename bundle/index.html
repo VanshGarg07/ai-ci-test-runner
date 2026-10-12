@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-CI Automated Test Runner</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #0f172a; color: #f8fafc; padding: 40px 20px; max-width: 800px; margin: 0 auto; }
+        h1 { font-size: 1.75rem; color: #ffffff; font-weight: 700; margin-bottom: 8px; }
+        p { color: #94a3b8; font-size: 0.95rem; margin-bottom: 24px; }
+        .input-group { display: flex; gap: 12px; margin-bottom: 32px; }
+        input[type="url"] { flex: 1; background-color: #1e293b; border: 1px solid #475569; border-radius: 4px; padding: 12px 16px; color: #ffffff; font-size: 0.95rem; outline: none; }
+        input[type="url"]:focus { border-color: #64748b; }
+        button { background-color: #f8fafc; color: #0f172a; border: none; border-radius: 4px; padding: 12px 24px; font-weight: 600; font-size: 0.95rem; cursor: pointer; }
+        button:hover { background-color: #e2e8f0; }
+        button:disabled { opacity: 0.6; cursor: not-allowed; }
+        .status-box { background-color: #1e293b; border: 1px solid #334155; border-radius: 4px; padding: 20px; min-height: 150px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.85rem; color: #cbd5e1; overflow-x: auto; white-space: pre-wrap; }
+        footer { margin-top: 60px; border-top: 1px solid #334155; padding-top: 16px; display: flex; gap: 16px; }
+        footer a { color: #64748b; font-size: 0.85rem; text-decoration: none; }
+        footer a:hover { color: #94a3b8; }
+    </style>
+</head>
+<body>
+    <h1>AI-CI Automated Test Runner</h1>
+    <p>Provide a deployment URL target endpoint to execute an isolated headless browser diagnostic audit.</p>
+
+    <div class="input-group">
+        <input type="url" id="targetUrl" placeholder="https://example.com" required>
+        <button id="runBtn">Run Audit</button>
+    </div>
+
+    <div class="status-box" id="outputConsole">System status: Ready. Awaiting user input parameters...</div>
+
+    <footer>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+    </footer>
+
+    <script src="anna-tool-ids.js" defer></script>
+    <script src="app.js" type="module"></script>
+</body>
+</html>

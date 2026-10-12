@@ -1,0 +1,9 @@
+{
+  "$schema": "anna-executa-identity/v1",
+  "host": "https://anna.partners",
+  "executa_id": 1225,
+  "tool_id": "tool-vansh-garg-aici-engine-htwt45jr",
+  "slug": "aici-engine",
+  "executa_type": "tool",
+  "first_published_at": "2026-10-12T12:19:40.884Z"
+}
