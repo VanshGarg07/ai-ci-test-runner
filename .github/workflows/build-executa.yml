@@ -61,7 +61,7 @@ jobs:
         with:
           name: aici-engine-linux-x86_64
           path: dist/*.tar.gz
-        working-directory: .
+        
 
       - name: Publish to a GitHub Release
         env:
