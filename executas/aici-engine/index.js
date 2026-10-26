@@ -8,16 +8,33 @@ try { require('dotenv').config({ quiet: true }); } catch (_) {} // local dev onl
 const log = (...a) => console.error('[aici-engine]', ...a);
 const send = (obj) => process.stdout.write(JSON.stringify(obj) + '\n');
 
+// Block loopback / private / link-local hosts so the tool can't probe internal networks.
+// CI smoke test sets AICI_ALLOW_LOCAL=1 to audit a local fixture.
+function isPrivateHost(h) {
+  h = h.toLowerCase().replace(/^\[|\]$/g, '');
+  if (h === 'localhost' || h.endsWith('.localhost') || h.endsWith('.internal') || h.endsWith('.local')) return true;
+  if (h === '::1' || h === '::' || /^f[cd][0-9a-f]{2}:/.test(h) || /^fe80:/.test(h)) return true;
+  const m = h.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
+  if (m) {
+    const [a, b] = [+m[1], +m[2]];
+    return a === 0 || a === 10 || a === 127 || (a === 169 && b === 254) ||
+      (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168) || (a === 100 && b >= 64 && b <= 127);
+  }
+  return false;
+}
+
 function parseUrl(raw) {
   try {
     const u = new URL(String(raw || '').trim());
-    return (u.protocol === 'http:' || u.protocol === 'https:') ? u.href : null;
+    if (u.protocol !== 'http:' && u.protocol !== 'https:') return null;
+    if (process.env.AICI_ALLOW_LOCAL !== '1' && isPrivateHost(u.hostname)) return null;
+    return u.href;
   } catch (_) { return null; }
 }
 
 async function runAuditTool(args, context) {
   const url = parseUrl(args && args.targetUrl);
-  if (!url) return { success: false, error: 'targetUrl must be a valid http(s) URL, e.g. https://example.com' };
+  if (!url) return { success: false, error: 'targetUrl must be a valid public http(s) URL, e.g. https://example.com (localhost and private addresses are not allowed)' };
 
   let report;
   try {

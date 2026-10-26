@@ -1,3 +1,4 @@
+#!/bin/sh
 SELF="$(readlink -f "$0")"
 DIR="$(dirname "$SELF")"
 export PLAYWRIGHT_BROWSERS_PATH="$DIR/browsers"

@@ -52,7 +52,7 @@ jobs:
           D=$(printf '%s\n' '{"jsonrpc":"2.0","id":1,"method":"describe"}' | timeout 20 "$T/x/aici-engine" | head -n1)
           echo "describe: $D" | cut -c1-200
           echo "$D" | grep -q '"run_audit"'
-          A=$( (printf '%s\n' '{"jsonrpc":"2.0","id":2,"method":"invoke","params":{"tool":"run_audit","arguments":{"targetUrl":"http://127.0.0.1:8080/broken.html"}}}'; sleep 30) | timeout 50 "$T/x/aici-engine" | head -n1 )
+          A=$( (printf '%s\n' '{"jsonrpc":"2.0","id":2,"method":"invoke","params":{"tool":"run_audit","arguments":{"targetUrl":"http://127.0.0.1:8080/broken.html"}}}'; sleep 30) | AICI_ALLOW_LOCAL=1 timeout 50 "$T/x/aici-engine" | head -n1 )
           echo "audit: $A" | cut -c1-500
           echo "$A" | grep -q '"crashCount":1'
 

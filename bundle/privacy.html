@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy - AI-CI Diagnostic Agent</title>
+    <title>Privacy Policy - AI-CI Automated Test Runner</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #1e293b; background-color: #f8fafc; padding: 40px 20px; max-width: 800px; margin: 0 auto; }
         h1 { color: #0f172a; font-size: 2rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 30px; font-weight: 700; }
@@ -17,17 +17,17 @@
     <h1>Privacy Policy</h1>
     <p class="meta">Last Updated: October 8, 2026</p>
     
-    <p>The AI-CI Diagnostic Agent ("the Application") provides local, automated browser testing utilities within the Anna AI OS sandbox environment. This privacy documentation outlines our data processing standards.</p>
+    <p>The AI-CI Automated Test Runner ("the Application") provides automated headless-browser testing utilities within the Anna AI OS environment. This privacy documentation outlines our data processing standards.</p>
     
     <h2>1. Data Processing and Scope</h2>
-    <p>The Application operates locally within your designated sandboxed environment. When an automated UI diagnostic check is executed, the following technical data point aggregates are processed:</p>
+    <p>The audit runs in an isolated headless browser on the host that runs the Application's engine. When an automated UI diagnostic check is executed, the following technical data point aggregates are processed:</p>
     <ul>
-        <li>Target URL addresses provided explicitly during execution execution variables.</li>
+        <li>Target URL addresses that you enter when running an audit.</li>
         <li>Browser console diagnostic statements and unhandled functional stack traces.</li>
     </ul>
 
-    <h2>2. Third-Party API Orchestration</h2>
-    <p>In the event that runtime exceptions or unhandled failures are captured during a browser audit loop, technical error strings are forwarded securely to the Google Gemini API framework via your configured environment credentials. No personally identifiable credentials, structural user profiles, or raw database records are transmission-eligible.</p>
+    <h2>2. Third-Party and AI Processing</h2>
+    <p>If runtime exceptions are captured during an audit, the error messages and a limited sample of console output may be sent for AI diagnosis. This happens in one of two ways: to the Google Gemini API using a key you configure for the engine, or, if no key is configured, to Anna's built-in AI service. Do not audit pages whose console output contains sensitive or personal data. We do not intentionally collect personally identifiable information, user profiles, or database records.</p>
 
     <h2>3. Data Storage Controls</h2>
     <p>The Application does not persist system data records, execution logs, or source code states to any centralized external server. All state memory is strictly structural and terminates immediately upon completion of the script cycle run.</p>
