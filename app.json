@@ -6,7 +6,7 @@
   "handle": "vansh-garg",
   "first_published_at": "2026-10-12T12:22:18.349Z",
   "name": "AI-CI Automated Test Runner",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Autonomous headless browser telemetry diagnostic engine catching console crashes.",
   "category": "productivity",
   "bundled_executas": {

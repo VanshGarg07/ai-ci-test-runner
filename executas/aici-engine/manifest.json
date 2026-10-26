@@ -1,7 +1,7 @@
 {
   "name": "aici-engine",
   "display_name": "AI-CI Engine",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Headless browser telemetry engine that captures console logs and uncaught runtime exceptions from a target URL.",
   "tools": [
     {

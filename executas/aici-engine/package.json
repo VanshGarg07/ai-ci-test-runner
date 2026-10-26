@@ -1,9 +1,11 @@
 {
   "name": "aici-engine",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Headless browser telemetry engine (Anna Executa).",
   "main": "index.js",
-  "bin": { "aici-engine": "index.js" },
+  "bin": {
+    "aici-engine": "index.js"
+  },
   "license": "ISC",
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
