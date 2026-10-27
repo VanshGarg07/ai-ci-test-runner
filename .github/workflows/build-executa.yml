@@ -64,6 +64,10 @@ jobs:
       - name: Smoke test the packaged build
         run: |
           set -eu
+          # macOS has no `timeout`; fall back to perl (preinstalled) so the test runs everywhere
+          if ! command -v timeout >/dev/null 2>&1; then
+            timeout() { perl -e "alarm shift; exec @ARGV" "$@"; }
+          fi
           VER="${{ steps.v.outputs.version }}"
           ARCHIVE="$GITHUB_WORKSPACE/dist/aici-engine-$VER-${{ matrix.platform }}.${{ matrix.ext }}"
           T="$RUNNER_TEMP/smoke"; mkdir -p "$T/site" "$T/x"
