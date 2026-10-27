@@ -4,6 +4,7 @@
   "executa_id": 1225,
   "tool_id": "tool-vansh-garg-aici-engine-htwt45jr",
   "slug": "aici-engine",
+  "version": "1.0.5",
   "type": "node",
   "executa_type": "tool",
   "first_published_at": "2026-10-12T12:19:40.884Z",
@@ -19,10 +20,25 @@
         "type": "binary",
         "supports_protocol": true,
         "binary_artifacts": {
+          "darwin-arm64": {
+            "path": "dist/aici-engine-{version}-darwin-arm64.tar.gz",
+            "entrypoint": "aici-engine",
+            "format": "tar.gz"
+          },
+          "darwin-x86_64": {
+            "path": "dist/aici-engine-{version}-darwin-x86_64.tar.gz",
+            "entrypoint": "aici-engine",
+            "format": "tar.gz"
+          },
           "linux-x86_64": {
             "path": "dist/aici-engine-{version}-linux-x86_64.tar.gz",
             "entrypoint": "aici-engine",
             "format": "tar.gz"
+          },
+          "windows-x86_64": {
+            "path": "dist/aici-engine-{version}-windows-x86_64.zip",
+            "entrypoint": "aici-engine.exe",
+            "format": "zip"
           }
         }
       }

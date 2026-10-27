@@ -11,10 +11,15 @@
         .input-group { display: flex; gap: 12px; margin-bottom: 32px; }
         input[type="url"] { flex: 1; background-color: #1e293b; border: 1px solid #475569; border-radius: 4px; padding: 12px 16px; color: #ffffff; font-size: 0.95rem; outline: none; }
         input[type="url"]:focus { border-color: #64748b; }
+        select { background-color: #1e293b; border: 1px solid #475569; border-radius: 4px; padding: 12px; color: #ffffff; font-size: 0.95rem; }
         button { background-color: #f8fafc; color: #0f172a; border: none; border-radius: 4px; padding: 12px 24px; font-weight: 600; font-size: 0.95rem; cursor: pointer; }
         button:hover { background-color: #e2e8f0; }
         button:disabled { opacity: 0.6; cursor: not-allowed; }
         .status-box { background-color: #1e293b; border: 1px solid #334155; border-radius: 4px; padding: 20px; min-height: 150px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.85rem; color: #cbd5e1; overflow-x: auto; white-space: pre-wrap; }
+        .actions { display: flex; align-items: center; gap: 12px; margin-top: 12px; min-height: 40px; }
+        .secondary { background-color: #1e293b; color: #e2e8f0; border: 1px solid #475569; padding: 8px 16px; }
+        .secondary:hover { background-color: #334155; }
+        #copyNote { color: #94a3b8; font-size: 0.85rem; }
         footer { margin-top: 60px; border-top: 1px solid #334155; padding-top: 16px; display: flex; gap: 16px; }
         footer a { color: #64748b; font-size: 0.85rem; text-decoration: none; }
         footer a:hover { color: #94a3b8; }
@@ -26,10 +31,18 @@
 
     <div class="input-group">
         <input type="url" id="targetUrl" placeholder="https://example.com" required>
+        <select id="device" aria-label="Device mode">
+            <option value="desktop">Desktop</option>
+            <option value="mobile">Mobile</option>
+        </select>
         <button id="runBtn">Run Audit</button>
     </div>
 
     <div class="status-box" id="outputConsole">System status: Ready. Awaiting user input parameters...</div>
+    <div class="actions">
+        <button id="copyBtn" class="secondary" type="button" hidden>Copy report</button>
+        <span id="copyNote"></span>
+    </div>
 
     <footer>
         <a href="privacy.html">Privacy Policy</a>

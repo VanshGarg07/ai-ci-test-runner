@@ -1,18 +1,29 @@
 {
   "name": "aici-engine",
   "display_name": "AI-CI Engine",
-  "version": "1.0.4",
-  "description": "Headless browser telemetry engine that captures console logs and uncaught runtime exceptions from a target URL.",
+  "version": "1.0.5",
+  "description": "Headless browser telemetry engine that captures console logs, uncaught runtime exceptions and failed network requests from a target URL, in desktop or mobile mode.",
   "tools": [
     {
       "name": "run_audit",
-      "description": "Load a URL in an isolated headless Chromium, capture console logs and runtime errors, and return a structured diagnostic report.",
+      "description": "Load a public URL in an isolated headless Chromium (desktop or mobile), capture console logs, runtime errors and failed network requests, and return a structured diagnostic report.",
       "parameters": [
         {
           "name": "targetUrl",
           "type": "string",
           "description": "Full http(s) URL to audit, e.g. https://example.com",
           "required": true
+        },
+        {
+          "name": "device",
+          "type": "string",
+          "description": "Device mode to emulate: desktop (default) or mobile.",
+          "required": false,
+          "default": "desktop",
+          "enum": [
+            "desktop",
+            "mobile"
+          ]
         }
       ],
       "timeout": 90

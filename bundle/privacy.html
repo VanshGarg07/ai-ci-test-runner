@@ -15,7 +15,7 @@
 </head>
 <body>
     <h1>Privacy Policy</h1>
-    <p class="meta">Last Updated: October 8, 2026</p>
+    <p class="meta">Last Updated: October 27, 2026</p>
     
     <p>The AI-CI Automated Test Runner ("the Application") provides automated headless-browser testing utilities within the Anna AI OS environment. This privacy documentation outlines our data processing standards.</p>
     
@@ -24,10 +24,12 @@
     <ul>
         <li>Target URL addresses that you enter when running an audit.</li>
         <li>Browser console diagnostic statements and unhandled functional stack traces.</li>
+        <li>The addresses, HTTP methods and status codes of network requests the page made that failed or returned an error.</li>
+        <li>The device mode (desktop or mobile) you select.</li>
     </ul>
 
     <h2>2. Third-Party and AI Processing</h2>
-    <p>If runtime exceptions are captured during an audit, the error messages and a limited sample of console output may be sent for AI diagnosis. This happens in one of two ways: to the Google Gemini API using a key you configure for the engine, or, if no key is configured, to Anna's built-in AI service. Do not audit pages whose console output contains sensitive or personal data. We do not intentionally collect personally identifiable information, user profiles, or database records.</p>
+    <p>If runtime exceptions are captured during an audit, the error messages, a limited sample of console output and the list of failed requests may be sent for AI diagnosis. This happens in one of two ways: to the Google Gemini API using a key you configure for the engine, or, if no key is configured, to Anna's built-in AI service. Do not audit pages whose console output or request addresses contain sensitive or personal data (for example access tokens in URLs). We do not intentionally collect personally identifiable information, user profiles, or database records.</p>
 
     <h2>3. Data Storage Controls</h2>
     <p>The Application does not persist system data records, execution logs, or source code states to any centralized external server. All state memory is strictly structural and terminates immediately upon completion of the script cycle run.</p>

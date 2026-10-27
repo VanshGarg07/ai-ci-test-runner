@@ -36,26 +36,36 @@ async function runAuditTool(args, context) {
   const url = parseUrl(args && args.targetUrl);
   if (!url) return { success: false, error: 'targetUrl must be a valid public http(s) URL, e.g. https://example.com (localhost and private addresses are not allowed)' };
 
+  const device = args && args.device === 'mobile' ? 'mobile' : 'desktop';
+
   let report;
   try {
     const { runAudit } = require('./browser'); // lazy: describe still works if Playwright is missing
-    report = await runAudit(url);
+    report = await runAudit(url, { device });
   } catch (e) {
     log('browser failure:', e.message);
     return { success: false, error: 'Could not start the headless browser: ' + e.message };
   }
 
+  const failedRequests = report.failedRequests || [];
   const data = {
     url,
+    device: report.device || device,
     crashCount: report.runtimeErrors.length,
+    failedRequestCount: failedRequests.length,
+    consoleErrorCount: report.consoleErrors || 0,
+    consoleWarningCount: report.consoleWarnings || 0,
     runtimeErrors: report.runtimeErrors,
+    failedRequests,
     consoleLogs: report.consoleLogs,
     diagnosis: null,
     diagnosisNote: null,
   };
 
   if (data.crashCount === 0) {
-    data.diagnosisNote = 'Clean: 0 runtime exceptions encountered.';
+    data.diagnosisNote = failedRequests.length === 0
+      ? 'Clean: 0 runtime exceptions encountered.'
+      : `No runtime exceptions, but ${failedRequests.length} failed network request(s) were detected.`;
   } else {
     const key = (context && context.credentials && context.credentials.GEMINI_API_KEY) || process.env.GEMINI_API_KEY;
     if (!key) {
@@ -63,7 +73,7 @@ async function runAuditTool(args, context) {
     } else {
       try {
         const { analyzeErrors } = require('./llm');
-        data.diagnosis = (await analyzeErrors(report.runtimeErrors, report.consoleLogs, key)).trim();
+        data.diagnosis = (await analyzeErrors(report.runtimeErrors, report.consoleLogs, key, failedRequests)).trim();
       } catch (e) {
         log('LLM failure:', e.message);
         data.diagnosisNote = 'AI diagnosis failed: ' + e.message;
