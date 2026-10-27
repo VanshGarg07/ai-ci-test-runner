@@ -64,10 +64,6 @@ jobs:
       - name: Smoke test the packaged build
         run: |
           set -eu
-          # macOS has no `timeout`; fall back to perl (preinstalled) so the test runs everywhere
-          if ! command -v timeout >/dev/null 2>&1; then
-            timeout() { perl -e "alarm shift; exec @ARGV" "$@"; }
-          fi
           VER="${{ steps.v.outputs.version }}"
           ARCHIVE="$GITHUB_WORKSPACE/dist/aici-engine-$VER-${{ matrix.platform }}.${{ matrix.ext }}"
           T="$RUNNER_TEMP/smoke"; mkdir -p "$T/site" "$T/x"
@@ -79,13 +75,7 @@ jobs:
           printf '%s' '<!DOCTYPE html><html><body><script>window.onload=function(){processSystemPayloadData();};</script></body></html>' > "$T/site/broken.html"
           (cd "$T/site" && nohup python3 -m http.server 8080 --bind 127.0.0.1 >/dev/null 2>&1 &) || true
           sleep 3
-          BIN="$T/x/aici-engine${{ matrix.exe }}"
-          D=$(printf '%s\n' '{"jsonrpc":"2.0","id":1,"method":"describe"}' | timeout 30 "$BIN" | head -n1)
-          echo "describe: $D" | cut -c1-200
-          echo "$D" | grep -q '"run_audit"'
-          A=$( (printf '%s\n' '{"jsonrpc":"2.0","id":2,"method":"invoke","params":{"tool":"run_audit","arguments":{"targetUrl":"http://127.0.0.1:8080/broken.html"}}}'; sleep 30) | AICI_ALLOW_LOCAL=1 timeout 60 "$BIN" | head -n1 )
-          echo "audit: $A" | cut -c1-500
-          echo "$A" | grep -q '"crashCount":1'
+          node packaging/smoke.js "$T/x/aici-engine${{ matrix.exe }}" "http://127.0.0.1:8080/broken.html"
 
       - name: Keep the archive as a workflow artifact
         uses: actions/upload-artifact@v4
